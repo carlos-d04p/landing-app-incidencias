@@ -1,41 +1,64 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const navItems = document.querySelectorAll('.nav-item');
+  const hamburger = document.querySelector('.hamburger');
+  const mobileNav = document.querySelector('.mobile-nav');
+  const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+  const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
   const sections = document.querySelectorAll('.section');
 
-  // Smooth scroll
+  // Alternar menú móvil
+  hamburger.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+  });
+
+  // Cerrar menú al hacer clic en un enlace
+  mobileNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+    });
+  });
+
+  // Smooth scroll y active link
   navItems.forEach(item => {
-    item.addEventListener('click', function(e) {
+    item.addEventListener('click', function (e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
+      const targetId = this.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
         window.scrollTo({
-          top: target.offsetTop - 80,
+          top: targetSection.offsetTop - 80,
           behavior: 'smooth'
         });
       }
+
+      // Quitar active de todos
+      navItems.forEach(link => link.classList.remove('active'));
+      this.classList.add('active');
     });
   });
 
-  // Active link on scroll
-  window.addEventListener('scroll', () => {
-    let current = '';
+  // Resaltar sección activa al hacer scroll
+  const highlightActiveSection = () => {
+    let currentId = '';
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 120;
-      const sectionHeight = section.offsetHeight;
-      if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-        current = section.getAttribute('id');
+      const sectionTop = section.offsetTop - 100;
+      const sectionBottom = sectionTop + section.offsetHeight;
+      if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+        currentId = section.getAttribute('id');
       }
     });
 
-    navItems.forEach(item => {
-      item.classList.remove('active');
-      if (item.getAttribute('href') === `#${current}`) {
-        item.classList.add('active');
-      }
-    });
-  });
+    navItems.forEach(item => item.classList.remove('active'));
+    if (currentId) {
+      const activeLink = document.querySelector(`.nav-item[href="#${currentId}"], .mobile-nav-item[href="#${currentId}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  };
 
-  // Fade-in on scroll
+  window.addEventListener('scroll', highlightActiveSection);
+  setTimeout(highlightActiveSection, 100);
+
+  // Animación al hacer scroll (fade-in)
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {

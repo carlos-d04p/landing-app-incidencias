@@ -1,4 +1,4 @@
-/* --- Fuentes y variables --- */
+/* --- Variables de color y tipografía --- */
 :root {
   --green: #2e7d32;
   --green-light: #4caf50;
@@ -9,8 +9,6 @@
   --gray-200: #e0e0e0;
   --gray-700: #4d4d4d;
   --gray-900: #2d2d2d;
-  --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -32,7 +30,7 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
-/* --- Header --- */
+/* --- Menú fijo --- */
 .main-header {
   position: fixed;
   top: 0;
@@ -101,6 +99,83 @@ h1, h2, h3 {
   background: var(--green);
 }
 
+/* --- Menú hamburguesa --- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background: var(--gray-900);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Menú móvil desde la derecha */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: right 0.4s ease;
+  overflow-y: auto;
+  padding-top: 72px; /* Para no tapar el header */
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+.mobile-nav-content {
+  padding: 1.5rem 2rem;
+}
+
+.mobile-nav-item {
+  display: block;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+  color: var(--green-light);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-nav-item:last-child {
+  border-bottom: none;
+}
+
+/* --- Responsive: activar hamburguesa en móvil --- */
+@media (max-width: 768px) {
+  .main-nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
 /* --- Secciones generales --- */
 .section {
   padding: 6rem 0;
@@ -120,7 +195,7 @@ h1, h2, h3 {
   padding: 0 2rem;
 }
 
-/* --- Layout dividido (desktop) --- */
+/* --- Hero (Inicio) --- */
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -128,21 +203,6 @@ h1, h2, h3 {
   align-items: center;
 }
 
-.split.reverse {
-  grid-template-columns: 1fr 1fr;
-  direction: rtl;
-}
-
-.split.reverse > * {
-  direction: ltr;
-}
-
-.text-content,
-.visual-content {
-  width: 100%;
-}
-
-/* --- Tipografía y contenido --- */
 .hero-title {
   font-size: 2.4rem;
   line-height: 1.2;
@@ -156,25 +216,26 @@ h1, h2, h3 {
   max-width: 550px;
 }
 
-.section-title {
-  font-size: 2.1rem;
-  color: var(--green);
-  margin-bottom: 1.8rem;
-}
-
 .centered {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
 
-.section-text {
-  font-size: 1.05rem;
-  color: var(--gray-700);
-  max-width: 580px;
+#que-es .section-title {
+  color: var(--green);
+  margin-bottom: 1.5rem;
 }
 
-/* --- Dispositivo mockup --- */
+#que-es .section-text {
+  font-size: 1.05rem;
+  color: var(--gray-700);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* --- Dispositivo y mockups --- */
 .device-frame {
   width: 100%;
   max-width: 320px;
@@ -186,46 +247,57 @@ h1, h2, h3 {
   max-width: 220px;
 }
 
-.device-screen {
-  background: #f0f0f0;
-  border: 12px solid #222;
-  border-radius: 28px;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-style: italic;
-  font-size: 0.9rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-}
-
-.device-frame.vertical .device-screen {
-  height: 420px;
-}
-
-.device-screen {
-  background: #f0f0f0;
-  border: 12px solid #222;
-  border-radius: 28px;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-
-.mockup-img {
+.device-frame .mockup-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 24px;
+  display: block;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Marco simulado de móvil */
+.device-frame::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border-radius: 36px;
+  background: #111;
+  z-index: -1;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.device-frame.vertical::before {
+  border-radius: 32px;
+}
+
+.mockup-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+  margin-top: 2.8rem;
+}
+
+.mockup-item {
+  text-align: center;
+  max-width: 220px;
+}
+
+.mockup-label {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 1rem;
 }
 
 /* --- Flujo de trabajo --- */
 .workflow-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2.2rem;
   max-width: 1000px;
   margin: 0 auto;
@@ -237,13 +309,13 @@ h1, h2, h3 {
   padding: 1.8rem 1.2rem;
   background: var(--white);
   border-radius: 16px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .workflow-step:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 .step-icon {
@@ -263,28 +335,8 @@ h1, h2, h3 {
 
 .workflow-step h3 {
   font-size: 1.25rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
   color: var(--green-dark);
-}
-
-/* --- Mockups row --- */
-.mockup-row {
-  display: flex;
-  justify-content: center;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-  margin-top: 2.5rem;
-}
-
-.mockup-item {
-  text-align: center;
-  max-width: 220px;
-}
-
-.mockup-label {
-  margin-top: 1rem;
-  font-weight: 600;
-  color: var(--gray-700);
 }
 
 /* --- Beneficios --- */
@@ -295,7 +347,8 @@ h1, h2, h3 {
 .benefits-list {
   list-style: none;
   text-align: left;
-  max-width: 500px;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
 .benefits-list li {
@@ -321,17 +374,19 @@ h1, h2, h3 {
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(46, 125, 50, 0.3);
+  max-width: 300px;
+  margin: 2rem auto 0;
 }
 
 .stat-number {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 800;
   font-family: 'Montserrat', sans-serif;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .stat-label {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   opacity: 0.95;
 }
 
@@ -342,15 +397,41 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
-.download-placeholder {
-  background: var(--white);
-  border: 2px dashed var(--gray-200);
-  border-radius: 14px;
-  padding: 2.2rem;
-  margin-top: 1.8rem;
-  color: #888;
-  font-style: italic;
+.section-title {
+  font-size: 2.1rem;
+  color: var(--green);
+  margin-bottom: 1.4rem;
+}
+
+.centered {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-text {
   font-size: 1.05rem;
+  color: var(--gray-700);
+  margin-bottom: 1.8rem;
+}
+
+.download-button {
+  display: inline-block;
+  background: var(--green);
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 0.9rem 2.4rem;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+  transition: all 0.3s ease;
+}
+
+.download-button:hover {
+  background: var(--green-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
 }
 
 /* --- Animaciones --- */
@@ -376,16 +457,17 @@ h1, h2, h3 {
     font-size: 2rem;
   }
 
-  .workflow-grid {
-    gap: 1.6rem;
+  .hero-subtitle {
+    max-width: 100%;
+    padding: 0 1rem;
   }
 
-  .device-frame {
-    max-width: 260px;
+  .mockup-row {
+    gap: 1.8rem;
   }
 
-  .device-frame .device-screen {
-    height: 420px;
+  .stats-card {
+    margin-top: 2rem;
   }
 }
 
@@ -403,6 +485,18 @@ h1, h2, h3 {
   }
 
   .stat-number {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
+  }
+
+  .download-button {
+    width: 90%;
+  }
+
+  .workflow-grid {
+    gap: 1.5rem;
+  }
+
+  .workflow-step {
+    padding: 1.4rem 1rem;
   }
 }
